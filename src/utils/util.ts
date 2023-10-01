@@ -79,7 +79,7 @@ export function hackAlert (before?: ()=>void, after?: ()=>void) {
     window.confirm = mod(_confirm);
     window.prompt = mod(_prompt);
   } catch (e) {
-    
+
   }
 }
 
@@ -131,8 +131,8 @@ function isMobileByUa () {
 
 function isMobile () {
   const {platform, maxTouchPoints} = navigator;
-  if (typeof maxTouchPoints === 'number') {
-    return maxTouchPoints > 1;
+  if (typeof maxTouchPoints === 'number' && maxTouchPoints < 2) {
+    return false
   }
   if (typeof platform === 'string') {
     const v = platform.toLowerCase();

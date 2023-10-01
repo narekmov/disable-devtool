@@ -12,7 +12,7 @@ let isSuspend = () => false;
 
 export function disableKeyAndMenu (dd: IDisableDevtool) {
   isSuspend = () => dd.isSuspend;
-  
+
   const top = window.top;
   let parent = window.parent;
   disableTarget(window);
@@ -28,13 +28,18 @@ function disableTarget (target: Window) {
   // let key1 = 'shiftKey', key2 = 'ctrlKey';
   // 'metaKey'; // mac 的 commond
   // 'altKey'; // mac 的 option
-  const KEY = {J: 74, I: 73, U: 85, S: 83, F12: 123};
-     
+  const KEY = {C: 67, J: 74, I: 73, U: 85, S: 83, F12: 123};
+
   // 禁用 ctrl + shift + i/j
   const isOpenDevToolKey = IS.macos ?
     ((e: KeyboardEvent, code: number) => (e.metaKey && e.altKey && (code === KEY.I || code === KEY.J))) :
     ((e: KeyboardEvent, code: number) => (e.ctrlKey && e.shiftKey && (code === KEY.I || code === KEY.J)));
-  
+
+  // ctrl + shift + c
+  const isOpenInspectKey = IS.macos ?
+    ((e: KeyboardEvent, code: number) => (e.metaKey && e.altKey && code === KEY.C)) :
+    ((e: KeyboardEvent, code: number) => (e.ctrlKey && e.shiftKey && code === KEY.C));
+
   const isViewSourceCodeKey = IS.macos ?
     ((e: KeyboardEvent, code: number) => (e.metaKey && e.altKey && code === KEY.U) || (e.metaKey && code === KEY.S)) :
     ((e: KeyboardEvent, code: number) => (e.ctrlKey && (code === KEY.S || code === KEY.U)));
@@ -44,6 +49,7 @@ function disableTarget (target: Window) {
     const keyCode = e.keyCode || e.which;
     if (
       keyCode === KEY.F12 || // 禁用f12
+      isOpenInspectKey(e, keyCode) || // ctrl + shift + c
       isOpenDevToolKey(e, keyCode) || // 禁用 ctrl + shift + i
       isViewSourceCodeKey(e, keyCode) // 禁用 ctrl + u 和 ctrl + s 查看和保存源码
     ) {
