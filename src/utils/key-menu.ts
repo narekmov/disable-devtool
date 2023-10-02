@@ -37,7 +37,7 @@ function disableTarget (target: Window) {
 
   // ctrl + shift + c
   const isOpenInspectKey = IS.macos ?
-    ((e: KeyboardEvent, code: number) => (e.metaKey && e.altKey && code === KEY.C)) :
+    ((e: KeyboardEvent, code: number) => (e.metaKey && e.shiftKey && code === KEY.C)) :
     ((e: KeyboardEvent, code: number) => (e.ctrlKey && e.shiftKey && code === KEY.C));
 
   const isViewSourceCodeKey = IS.macos ?
